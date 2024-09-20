@@ -1,3 +1,4 @@
+const { keccak256 } = require('./ethersUtils');
 const BigNumber = require('bignumber.js');
 const utf8 = require('utf8');
 
@@ -359,7 +360,9 @@ var isString = function (object) {
     return typeof object === 'string' ||
         (object && object.constructor && object.constructor.name === 'String');
 };
-
+var sha3 = (string, prefix = true)=>{
+    return (prefix ? '0x' : '') + keccak256(Buffer.from(string, 'utf-8')).toString().substring(2);
+}
 /**
  * Returns true if object is function, otherwise false
  *
@@ -444,4 +447,5 @@ module.exports = {
     isBoolean: isBoolean,
     isArray: isArray,
     isJson: isJson,
+    sha3:sha3
 };

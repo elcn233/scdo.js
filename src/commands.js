@@ -26,7 +26,12 @@ var commands = module.exports.commands = {
     'getAccountTransactions',
     'getBlockTransactions',
     'getBlockTransactionsByHeight',
-    'getBlockTransactionsByHash'
+    'getBlockTransactionsByHash',
+    'requestAccounts',
+    'sendTransaction',
+    'signTransaction',
+    'signMessage',
+    'ecRecover'
   ],
   "txpool":[
     'getTransactionByHash',

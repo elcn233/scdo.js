@@ -1,6 +1,7 @@
 const createKeccakHash = require('keccak')
 const secp256k1 = require('secp256k1')
 const rlp = require('rlp')
+const BigNumber = require('bignumber.js');
 
 /**
  * Creates a new transaction object.
@@ -33,8 +34,12 @@ class Transaction {
         rawTx = rawTx || {}
         
         var raw=[]
-        for(var i in rawTx){
-            raw.push(rawTx[i])
+        for (const key in rawTx) {
+            if (BigNumber.isBigNumber(rawTx[key])) {
+              raw.push("0x" + rawTx[key].toString(16));
+            } else {
+              raw.push(rawTx[key]);
+            }
         }
         this.raw = raw
         this.Data = rawTx
