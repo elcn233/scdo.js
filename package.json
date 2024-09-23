@@ -1,6 +1,6 @@
 {
   "name": "scdo.js",
-  "version": "0.20.0",
+  "version": "0.24.1",
   "description": "Generic script api library for Scdo blockchain",
   "main": "./index.js",
   "scripts": {

@@ -2,6 +2,7 @@ const utils = require('../index');
 const { encodeParamsV2ByABI, decodeParamsV2ByABI } = require('../abi');
 const injectpromise = require('injectpromise');
 const { Interface } = require('@ethersproject/abi');
+const { BigNumber } = require('bignumber.js');
 
 const getFunctionSelector = abi => {
     abi.stateMutability = abi.stateMutability ? abi.stateMutability.toLowerCase() : 'nonpayable';
@@ -85,7 +86,13 @@ class Method {
             throw new Error(`Methods with state mutability "${stateMutability}" must use send()`);
        
         const result = await this.scdo.client.call(this.contract.address, options.rawParameter, -1);
-        return decodeOutput(this.abi, result.result);
+        var outputArray = decodeOutput(this.abi, result.result);
+        outputArray.forEach((value, index) => {
+            if (value._isBigNumber) {
+                outputArray[index] = BigNumber(value.toString());
+            }
+        })
+        return outputArray;
     }
 
     async _send(options = {}) {

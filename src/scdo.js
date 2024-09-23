@@ -104,30 +104,32 @@ class ScdoNodeProvider {
         params: args
       });
 
+      console.log("rpcData:", rpcData)
+
       request.onload = function () {
         if (request.readyState === 4 && request.timeout !== 1) {
           var result = request.responseText
           try {
             result = JSONbig.parse(result);
             if (result.error) {
-              reject(args, new Error(JSONbig.stringify(result)));
+              reject(new Error(args, JSONbig.stringify(result)));
               return;
             }
 
             resolve(result.result);
           } catch (exception) {
-            reject(args, new Error(exception + ' : ' + JSONbig.stringify(result)));
+            reject(new Error(args, exception + ' : ' + JSONbig.stringify(result)));
           }
         }
       };
 
       request.ontimeout = function () {
-        reject(args, new Error('CONNECTION TIMEOUT: timeout of ' + currHost + ' ms achieved'));
+        reject(new Error(args, 'CONNECTION TIMEOUT: timeout of ' + currHost + ' ms achieved'));
       };
 
       request.onerror = function () {
         if (request.status == 0) {
-          reject(args, new Error('CONNECTION ERROR: Couldn\'t connect to node ' + currHost + '.'));
+          reject(new Error(args, 'CONNECTION ERROR: Couldn\'t connect to node ' + currHost + '.'));
         } else {
           reject(args, request.statusText);
         }
@@ -300,6 +302,9 @@ class ScdoWebProvider {
       method: api.getNamespace(command).concat("_").concat(command),
       params: args,
     }
+
+    console.log("rpcData:", rpcData)
+
     return this.provider.request(rpcData);
   }
   /**
